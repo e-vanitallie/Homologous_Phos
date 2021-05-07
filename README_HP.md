@@ -1,6 +1,6 @@
 *Identifying homologous phospho-acceptors between Xenopus and human using global and local sequence homology:* 
 
-![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/OverviewOfMatchingSteps.png)
+![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/OverviewOfMatchingSteps.png)
 
 The code for executing this is all written in python. The file **matching_scripy.py** calls functions that are in four other files that need to be imported. We also import that pathlib library, create a dictionary of files that will be inputs for the functions below, and load the information about our measured references and their residues and motifs into a dictionary for future use.   
 
@@ -170,10 +170,10 @@ output_header = ["Xenopus_Reference","Human_Reference","Match_Code",\
 st3.writeoutput_table(alignment_results_more,'210417_output_matching.csv', output_header)
 ```
 
-**STEP 3** is write as .ipynb file. The file is in this folder as well. You can see an html version of the executed notebook here: https://htmlpreview.github.io/?https://github.com/e-vanitallie/Homologous_Phos/blob/main/Motif_Scoring.html
+**STEP 3** is write as .ipynb file. The file is in this folder as well. You can see an html version of the executed notebook here: https://htmlpreview.github.io/?https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/Motif_Scoring.html
 
 Last, we need to determine which matches are good enough that we can actually use information from one species for the other one. We score the local sequence homology for all of these aligned motifs. The motif score is based on the Blosum 90 substitution penalty matrix. The alignment score is calculated from the flanking amino-acids only, not the aligned amino-acids. Since the alignment score depends not only on the number of matches, but also the identities of the constituent amino acids, we normalize for sequence effects of the score by find the “best score” (largest of human or xenopus alignment score to itself) and “worst scort” (smallest of human or xenopus alignment score to its flipped self). The “motif score” is the Xenopus against human alignment score minus the “worst score” divided by the “best score” minus the worst score. 
 ( Motif Score = ( Xenopus: Human alignment - “worst score”) / ( “best score” - “worst score” ) ) Then, using the alignments to non-phosphorylatable residues as our “false discoveries” we determine the false discovery rate as a function of motif score. We retain matches that have motif scores greater than or equal to 0.75 which means that we have a FDR of 7.9%. 
 
-![Plots of the results from assessing the matches and calculating a FDR for classifying motifs as informative.](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ResultsPlotsMatchingJupyter.png)
+![Plots of the results from assessing the matches and calculating a FDR for classifying motifs as informative.](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/ResultsPlotsMatchingJupyter.png)
 
