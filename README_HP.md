@@ -14,7 +14,7 @@ import step3_match as st3
 #from pathlib import Path
 import pathlib
 
-# --------- 1: SET UP -------------
+# --------- 0: SET UP -------------
 # Create a dictionary with all the variables
 
 dict_files = {'HumanFastaIn': "human-phosphosite-fastas.fasta", \
@@ -47,7 +47,7 @@ dict_blastp = {'BlastInputFolder': "blast_input_files", \
 The first step is to identify the human sequence in the reference set of human protein sequences that is the best match for each of the Xenopus protein references on which we have measured a phospho-site. We used the human-phosphosite-fastas.fasta from Phosphosite.org after filtering to remove all isoform references. We then BLAST the Xenopus references that we measure phosphorylations on against the human fasta file using call to locally downloaded version of BLASTP. (This part of the pipeline is slow if you run do not parallelize it. The code is not currently written with this implemented.)  
 
 ```python 
-# ----------- 2: BLASTP ------------------- 
+# ----------- 1: BLASTP ------------------- 
 # Remove the isoforms from the phospho-site database
 #   INPUTS -- info in dict_files and the regular expression to find the isforms
 #   OUTPUT -- a fasta dictionary with the human references with isoforms removed
@@ -93,7 +93,7 @@ dict_blastp["Blast_OutputFMT"])
 Next, we find determine whether (1) each phospho-protein residue has an acceptable human match and (2) if so, the phosphorylated Xenopus residue alligns to on that human reference. We choose the BLASTP result with the smallest e-value, and only use alignments if the e-values is less than 1e-20. For all of the phosphorylated residues on each Xenopus reference that has a good human match, we use the alignment to determine if there is a corresponding potentially phosphorylated residue that aligns on the matched human reference. At this step there are five possible outcomes from evaluating the alignments at each queried residue position: (1) aligned to an identical human residue (match) (2) S->T or T->S mismatch (match), (3) aligned to a different human residue (mismatch), (4) aligned to a gap in the human reference (mismatch), (5) found on a part of the Xenopus laevis reference that does not align to the human reference (mismatch). We consider serine and threonine residues that align to the opposite residue as matches for two reasons (1) mutations between S and T are relatively common over evolutionary time; (2) because there are many kinases that phosphorylated both serine and threonines. In the cases where the Xenopus residue aligns to a human residue, we determine the six amino acids that flank the aligned residue N- and C-terminally (the “motif”). 
 
 ```python
-# ---------- 3: Assess BLASTP results and determine what Xenopus phosphorylated residues align to  --- 
+# ---------- 2: Assess BLASTP results and determine what Xenopus phosphorylated residues align to  --- 
 #
 # A.  Go through each of the blastp output files and parse BTOP
 #     strings to generate files that have information about whether/to what the
@@ -154,8 +154,7 @@ match_dict, dict_files["XenRefsResidues"], info_dict, no_iso_dict)
 Then output the results to a file that we can use to analyze the motifs in a Jupyter notebook. 
 
 ```python
-# ------------- 4: Write the results into a .csv file ------------------
-#
+
 # Write an output file where each phosphorylated xenopus residue is a row and the Xenopus information,
 # match number code, and relevant human information are in columns
 #
@@ -171,6 +170,8 @@ output_header = ["Xenopus_Reference","Human_Reference","Match_Code",\
 st3.writeoutput_table(alignment_results_more,'210417_output_matching.csv', output_header)
 ```
 
-Then we score the local sequence homology for all of these aligned motifs. The motif score is based on the Blosum 90 substitution penalty matrix. The alignment score is calculated from the flanking amino-acids only, not the aligned amino-acids. Since the alignment score depends not only on the number of matches, but also the identities of the constituent amino acids, we normalize for sequence effects of the score by find the “best score” (largest of human or xenopus alignment score to itself) and “worst scort” (smallest of human or xenopus alignment score to its flipped self). The “motif score” is the Xenopus against human alignment score minus the “worst score” divided by the “best score” minus the worst score. 
+**STEP 3** is write as .ipynb file. The file is in this folder as well. You can see an html version of the executed notebook here: https://htmlpreview.github.io/?https://github.com/e-vanitallie/Homologous_Phos/blob/main/Motif_Scoring.html
+
+Last, we need to determine which matches are good enough that we can actually use information from one species for the other one. We score the local sequence homology for all of these aligned motifs. The motif score is based on the Blosum 90 substitution penalty matrix. The alignment score is calculated from the flanking amino-acids only, not the aligned amino-acids. Since the alignment score depends not only on the number of matches, but also the identities of the constituent amino acids, we normalize for sequence effects of the score by find the “best score” (largest of human or xenopus alignment score to itself) and “worst scort” (smallest of human or xenopus alignment score to its flipped self). The “motif score” is the Xenopus against human alignment score minus the “worst score” divided by the “best score” minus the worst score. 
 ( Motif Score = ( Xenopus: Human alignment - “worst score”) / ( “best score” - “worst score” ) ) Then, using the alignments to non-phosphorylatable residues as our “false discoveries” we determine the false discovery rate as a function of motif score. We retain matches that have motif scores greater than or equal to 0.75 which means that we have a FDR of 7.9%. 
 
