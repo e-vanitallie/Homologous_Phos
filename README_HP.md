@@ -1,5 +1,7 @@
 *Identifying homologous phospho-acceptors between Xenopus and human using global and local sequence homology:* 
 
+![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/OverviewOfMatchingSteps.png)
+
 The code for executing this is all written in python. The file **matching_scripy.py** calls functions that are in four other files that need to be imported. We also import that pathlib library, create a dictionary of files that will be inputs for the functions below, and load the information about our measured references and their residues and motifs into a dictionary for future use.   
 
 ```python
