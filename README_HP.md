@@ -44,7 +44,7 @@ dict_blastp = {'BlastInputFolder': "blast_input_files", \
 
 ```
 
-The first step is to identify the human sequence in the reference set of human protein sequences that is the best match for each of the Xenopus protein references on which we have measured a phospho-site. We used the human-phosphosite-fastas.fasta from Phosphosite.org after filtering to remove all isoform references. We then BLAST the Xenopus references that we measure phosphorylations on against the human fasta file using call to locally downloaded version of BLASTP. (This part of the pipeline is slow if you run do not parallelize it. The code is not currently written with this implemented.)  
+The first step is to identify the sequence in the reference set of human protein sequences that is the best match for each of the Xenopus protein references on which we have measured a phospho-site. We used the human-phosphosite-fastas.fasta from Phosphosite.org after filtering to remove all isoform references. We then BLAST the Xenopus references that we measure phosphorylations on against this filtered human fasta file (include in the **Files** folder of this repository) using calls to locally downloaded version of BLASTP (https://www.ncbi.nlm.nih.gov/books/NBK279690/). (This part of the pipeline is currently the slowest part because it is not parallelizd.)  
 
 ```python 
 # ----------- 1: BLASTP ------------------- 
