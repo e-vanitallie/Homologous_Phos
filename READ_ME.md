@@ -2,7 +2,7 @@
 
 ![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/OverviewOfMatchingSteps.png)
 
-This pieplien is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs.
+This piplinw is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs.
 
 ```
 #!/bin/sh
@@ -11,7 +11,7 @@ This pieplien is written in python. There is a shell script **Examp_Phos_Matchin
 #   inputs defined below.
 
 # the name of the human fasta file
-human_fasta="human-phosphosite-fastas.fasta"
+**human_fasta="human-phosphosite-fastas.fasta"**
 
 # the name of the folder than contains the Xenopus fasta file
 xen_fasta_folder="DevSeriesTrip_InputFiles_PreOccupancy"
