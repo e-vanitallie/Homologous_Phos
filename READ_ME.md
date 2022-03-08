@@ -4,7 +4,7 @@
 
 This pieplien is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs.
 
-'''
+```
 #!/bin/sh
 
 # This is a shell script that calls Xen_Human_Matching_Script.py with the
@@ -34,6 +34,6 @@ num_workers=4
 python3 Xen_Human_Matching_Script.py "$human_fasta" \
 "$xen_fasta_folder" "$xen_fasta_file" "$part1_date_str" "$exp_str" "$flag_blast" \
 "$num_workers"
-'''
+```
 
 The file **matching_scripy.py** calls functions that are in four other files that need to be imported. We also import that pathlib library, create a dictionary of files that will be inputs for the functions below, and load the information about our measured references and their residues and motifs into a dictionary for future use.   
