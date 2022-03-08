@@ -11,7 +11,8 @@ This piplinw is written in python. There is a shell script **Examp_Phos_Matching
 #   inputs defined below.
 
 # the name of the human fasta file
-**human_fasta="human-phosphosite-fastas.fasta"**
+human_fasta="human-phosphosite-fastas.fasta"
+<span style="color:red">cardinals</span>
 
 # the name of the folder than contains the Xenopus fasta file
 xen_fasta_folder="DevSeriesTrip_InputFiles_PreOccupancy"
