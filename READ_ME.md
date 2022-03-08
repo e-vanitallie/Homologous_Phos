@@ -2,7 +2,7 @@
 
 ![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/OverviewOfMatchingSteps.png)
 
-This pipline is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs.
+# This pipline is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs. 
 
 ```
 #!/bin/sh
@@ -37,7 +37,9 @@ python3 Xen_Human_Matching_Script.py "$human_fasta" \
 "$num_workers"
 ```
 
-The script **Xen_Human_Matching_Script.py** loads five pipeline modules and calls functions within the modules. We also import that pathlib library and use the inputs from the shell script command to create a dictionary of files that will be inputs for the modules functions. 
+# The script **Xen_Human_Matching_Script.py** loads five pipeline modules and calls functions within the modules. We also import that pathlib library and use the inputs from the shell script command to create a dictionary of files that will be inputs for the modules functions. There are eight parts of this pipeline. This readme will show each section individually. The module code is not included in the readme, but all of the files are extensively commented. 
+
+
 
 ```
 #!/usr/bin/env python3
