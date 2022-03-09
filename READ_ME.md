@@ -37,8 +37,10 @@ python3 Xen_Human_Matching_Script.py "$human_fasta" \
 "$num_workers"
 ```
 
-## The script **Xen_Human_Matching_Script.py** loads five pipeline modules and calls functions within the modules. We also import that pathlib library and use the inputs from the shell script command to create a dictionary of files that will be inputs for the modules functions. There are eight parts of this pipeline. This readme will show each section individually. The module code is not included in the readme, but all of the files are extensively commented. 
+## The script **Xen_Human_Matching_Script.py** is the master script for the pipeline. There are eight parts of this pipeline. This readme will show each section individually. The module code is not included in the readme, but all of the files are extensively commented.  
 
+**First section:**
+First, neccesary Pyton modules are loaded in addition to the five custom modules neccesary for this pipeline. modules. Then, a dictionary of files that will include inputs for the module functions is created using the pathlib library and the inputs from the shell script command.
 
 
 ```
