@@ -2,7 +2,7 @@
 
 ![OverviewImagesofthePipeline](https://github.com/e-vanitallie/Homologous_Phos/blob/main/ForMD/OverviewOfMatchingSteps.png)
 
-# This pipline is written in python. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs. 
+# This pipline is written in Python3. There is a shell script **Examp_Phos_Matching_ShellScript.sh** that calls the pipeline passing in user defined inputs. 
 
 ```
 #!/bin/sh
@@ -110,5 +110,18 @@ dict_files = {'HumanFastaIn': argumentList[0], \
 'XenRefsResidues': xen_refs_residue_file_fullpath, \
 'XenRefs_Sep': '\t', 'XenRefs_Quote': '"', 'XenRefs_Col': 1, 'XenResidue_Col': \
 2, 'XenRes_Sep': ";", 'OutputFile': matching_output_file_fullpath};
+```
+**Section 2:**
+Remove the isoforms from the phospho-site database
+    INPUTS -- info in dict_files and the regular expression to find the isforms
+    OUTPUT -- a fasta dictionary with the human references
+
+```
+print('Starting to generate human fasta file without isoforms.')
+
+no_iso_dict = st0.filter_fasta(dict_files["HumanFastaIn"],r"_iso",\
+    dict_files["HumanFastaOut"])
+
+print('Finished generating human fasta file without isoforms.')
 ```
 
