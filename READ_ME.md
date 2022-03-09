@@ -112,11 +112,13 @@ dict_files = {'HumanFastaIn': argumentList[0], \
 2, 'XenRes_Sep': ";", 'OutputFile': matching_output_file_fullpath};
 ```
 **Section 2:**
-Remove the isoforms from the phospho-site database
-    INPUTS -- info in dict_files and the regular expression to find the isforms
-    OUTPUT -- a fasta dictionary with the human references
+Remove the isoforms from the phospho-site plus human protein fasta file.
 
 ```
+# 2  --- Remove the isoforms from the phospho-site database
+#   INPUTS -- info in dict_files and the regular expression to find the isforms
+#   OUTPUT -- a fasta dictionary with the human references
+
 print('Starting to generate human fasta file without isoforms.')
 
 no_iso_dict = st0.filter_fasta(dict_files["HumanFastaIn"],r"_iso",\
