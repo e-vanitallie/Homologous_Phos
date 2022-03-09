@@ -142,3 +142,73 @@ xen_residues = st1_b.read_phosresidues_as_dict(\
     dict_files["XenResidue_Col"], dict_files["XenRes_Sep"])
 
 ```
+**Section 4:**
+
+```
+# 4 --- Part (i) -- Identify homologous human proteins
+#
+#       This is the longest part of the code. There are some situation where it
+#       might not be neccesary to execute this part of the code if it has
+#       previously been executed. Therefore, there is a Flag: FLAG_blast and
+#       this section of the code is only executed if FLAG_blast = 1.
+#
+#       Additionaly, the code for part D is written so that the blasting
+#       commands can be executed in "parallel" across multiple computer cores.
+#       The number of cores to use, or "workers," is a parameter in the shell
+#       script.
+#
+#       A.  Create a folder for the individual texts files for each of the
+# xenopus references on which phosphorylated residues are measured,
+#       B.  Generate the individual text files
+#       C.  Create a folder for the output balstp files
+#       D.  Blast the individual xenopus references against the human fasta file
+#           (Implemented with a mutlti-threaded queue)
+#
+#   INPUTS -- info in dict_files
+#          -- xen_residues
+#          -- info in dict_blastp
+#          -- the folder where the file for each reference should go
+
+dict_blastp = {'BlastInputFolder': "blast_input_files", \
+'BlastOutputFolder': "blast_output_files", 'Blast_Eval': 1e-20, \
+'Blast_OutputFMT': \
+'7 qacc sacc pident length mismatch gapopen qstart qend sstart send evalue btop'}
+
+if (FLAG_blast):
+
+# 4.A. Create folder where the individual Xenopus files for blasting will be saved
+
+    path_inputs = pathlib.Path(dict_blastp["BlastInputFolder"]).mkdir(parents=True, \
+    exist_ok=True)
+
+# 4.B. Create the seperate file for each xenopus reference that has phos residues
+
+    print('Starting to generate single sequence Xenopus fasta files for blasting.')
+
+    st1_f.generate_files4blast_xen(xen_residues, dict_files["XenFastaIn"], \
+    dict_blastp["BlastInputFolder"])
+
+    print('Finished generating single sequence Xenopus fasta files for blasting.')
+
+# 4.C. Create the folder where the blast results files will be saved
+
+    path_newfolder = pathlib.Path(dict_blastp["BlastOutputFolder"]).mkdir(parents=True, \
+    exist_ok=True)
+
+# 4.D. Use BLASTP to align each of individual xenopus files against the human
+# reference and write the designated information into a text file
+
+command_exec = "./step1_blast.py '{}' '{}' '{}' '{}' '{}' '{}' '{}' '{}' '{}' '{}'".\
+format(dict_files["XenRefsResidues"],\
+dict_files["XenRefs_Col"],\
+dict_files["XenResidue_Col"], dict_files["XenRes_Sep"],\
+dict_blastp["BlastInputFolder"], dict_files["HumanFastaOut"],\
+dict_blastp["BlastOutputFolder"], dict_blastp["Blast_Eval"], \
+dict_blastp["Blast_OutputFMT"], num_workers_input)
+
+print('Starting Xenopus fasta files versus Human fasta file blasting.')
+
+subprocess.call(command_exec, shell = True)
+
+print('Finished generating blast files for identifying Xenopus to Human best matches!')
+```
