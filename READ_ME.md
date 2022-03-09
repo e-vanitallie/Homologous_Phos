@@ -39,7 +39,7 @@ python3 Xen_Human_Matching_Script.py "$human_fasta" \
 
 ## The script **Xen_Human_Matching_Script.py** is the master script for the pipeline. There are eight parts of this pipeline. This readme will show each section individually. The module code is not included in the readme, but all of the files are extensively commented.  
 
-**First section:**
+**Section 1:**
 First, neccesary Pyton modules are loaded in addition to the five custom modules neccesary for this pipeline. modules. Then, a dictionary of files that will include inputs for the module functions is created using the pathlib library and the inputs from the shell script command.
 
 
@@ -126,4 +126,19 @@ no_iso_dict = st0.filter_fasta(dict_files["HumanFastaIn"],r"_iso",\
 
 print('Finished generating human fasta file without isoforms.')
 ```
+**Section 3:** 
+Make a dictionary relating the Xenopus fasta references and the residues numbers of those references with measured phosphorylations. 
 
+```
+
+# 3 --- SET UP --- Load the xenopus measured reference and residues information
+# into a dictionary in order to access the information
+#   INPUTS -- info in dict_files
+#   OUTPUT -- dictionary of the xenopus phospho references and residue numbers
+#               of the phosphorylations
+
+xen_residues = st1_b.read_phosresidues_as_dict(\
+    dict_files["XenRefsResidues"], dict_files["XenRefs_Col"],\
+    dict_files["XenResidue_Col"], dict_files["XenRes_Sep"])
+
+```
