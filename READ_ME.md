@@ -214,7 +214,7 @@ subprocess.call(command_exec, shell = True)
 print('Finished generating blast files for identifying Xenopus to Human best matches!')
 ```
 **Section 5:**
-Parse the BTOP alignment strings in the blast output files to identify what the Xenopus phosphorylated residues align to. 
+Parse the BTOP alignment strings in the blast output files to identify what the Xenopus phosphorylated residues align to on the best match human reference / if there is a good enough human protein match. 
 ```
 # 5 --- Go through each of the blastp output files and parse BTOP
 # strings to generate files that have information about whether/to what the
@@ -244,4 +244,39 @@ print('Parsing blast files to identify phosphorylated residue alighnment to huma
 
 [no_alignment, alignment_results] = st2.for_each_match(xen_residues, "-out.txt", \
 dict_blastp["BlastOutputFolder"], btop_dict, match_dict)
+```
+**Section 6:**
+```
+# 6 --- This function does three things:
+#
+#       ( 1 ) Determine the +/- 6 aa motif around the human residues that
+#       result from the alignments. Do this for residue matches, mismatches,
+#       and S/T swaps. This information will be used for determining the motif
+#       score & FDR, and other analysis in cases of homolgous matches.
+#
+#       ( 2 ) Adds the Xenopus motifs from the input information into the
+#       alingment dictionary for the Xenopus residues that align to a human res
+#
+#       ( 3 ) Add the residues from the Xenopus references that do not align to
+#       the alignment result dictionary
+#
+#  INPUTS  --- alignment results: the information for the Xenopus references
+#                   that have a human protien match
+#          --- no alignment: the list of Xenopus references that do not have
+#                   a human protien match
+#          --- match_dict: dictionary to access information in alignment_results
+#                   the files that has the Xenopus references, residues, and motifs
+#          --- info_dict: has information to access the file with the motifs
+#          --- no_iso_dict: the dictionary from the filtered human fasta file
+#
+#   OUTPUTS --- alignment_results_more: complete dictionary of alignment and non
+#                 alignemnt information that includes Xenopus and human motifs
+
+info_dict = {"file_del": "\t", "Xen_Reference": 1, "Xen_Residues": 2,\
+ "Xen_Motifs": 3, "file_sep": ";"};
+
+print('Compile the alignments and motifs into a dictionary!')
+
+alignment_results_more = st3.compile_results(alignment_results, no_alignment,\
+match_dict, dict_files["XenRefsResidues"], info_dict, no_iso_dict)
 ```
