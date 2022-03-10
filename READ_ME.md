@@ -281,3 +281,23 @@ print('Compile the alignments and motifs into a dictionary!')
 alignment_results_more = st3.compile_results(alignment_results, no_alignment,\
 match_dict, dict_files["XenRefsResidues"], info_dict, no_iso_dict)
 ```
+***Section 7:*** 
+Write the complete dictionary to a csv file. 
+```
+# 7 --- Write an output file where each phosphorylated xenopus
+#       residue is a row and the Xenoous information, match number code, and
+#       relevant human information are in columns
+#
+#   INPUTS -- alignment_results_more: dictionary that has the alignment or not
+#               alignment results for all xenopus phospho-protein references
+#             the name of the output file
+#          -- output_header: the column names for the output file
+
+output_header = ["Xenopus_Reference","Human_Reference","Match_Code",\
+"Xen_Residue","Human_Residue","Xen_Motif","Human_Motif"];
+
+print('Writing the resulting output file!')
+
+st3.writeoutput_table(alignment_results_more,dict_files["OutputFile"], output_header)
+
+```
