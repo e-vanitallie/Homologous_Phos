@@ -71,7 +71,6 @@ p = pathlib.Path.cwd()
 # use the inputs and pathlib to set up access to the paths
 argumentList = sys.argv[1:]
 
-'''
 #   the 1st argument is the file for "HumanFastIn"
 #   the 2nd argument is the folder that contains the xenopus reference
 #   the 3rd argument is the file name for the xenopus reference
@@ -80,7 +79,6 @@ argumentList = sys.argv[1:]
 #   the 5th argument is the exp_str for the experiment
 #   the 6th argument is whether or not blasting will happen
 #   the 7th argument is the number of workers used for mulitprocessing blasting
-'''
 
 xen_fasta_file_fullpath = pathlib.Path.home().joinpath(p.parent,argumentList[1], \
     argumentList[2])
@@ -130,7 +128,6 @@ print('Finished generating human fasta file without isoforms.')
 Make a dictionary relating the Xenopus fasta references and the residues numbers of those references with measured phosphorylations. 
 
 ```
-
 # 3 --- SET UP --- Load the xenopus measured reference and residues information
 # into a dictionary in order to access the information
 #   INPUTS -- info in dict_files
@@ -146,7 +143,7 @@ xen_residues = st1_b.read_phosresidues_as_dict(\
 Blast the Xenopus protein references that have phosphorylations measured on them against the human protein reference file to find the best match. The blasting is executed from a multi-core queue, but this portion of the code is still the longest if the number of Xenopus protein references is larger thana few hundred. 
 
 ```
-# 4 --- Part (i) -- Identify homologous human proteins
+# 4 --- Identify homologous human proteins
 #
 #       This is the longest part of the code. There are some situation where it
 #       might not be neccesary to execute this part of the code if it has
@@ -281,7 +278,7 @@ print('Compile the alignments and motifs into a dictionary!')
 alignment_results_more = st3.compile_results(alignment_results, no_alignment,\
 match_dict, dict_files["XenRefsResidues"], info_dict, no_iso_dict)
 ```
-***Section 7:*** 
+**Section 7:** 
 Write the complete dictionary to a csv file. 
 ```
 # 7 --- Write an output file where each phosphorylated xenopus
