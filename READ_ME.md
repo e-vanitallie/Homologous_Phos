@@ -143,6 +143,7 @@ xen_residues = st1_b.read_phosresidues_as_dict(\
 
 ```
 **Section 4:**
+Blast the Xenopus protein references that have phosphorylations measured on them against the human protein reference file to find the best match. The blasting is executed from a multi-core queue, but this portion of the code is still the longest if the number of Xenopus protein references is larger thana few hundred. 
 
 ```
 # 4 --- Part (i) -- Identify homologous human proteins
@@ -211,4 +212,36 @@ print('Starting Xenopus fasta files versus Human fasta file blasting.')
 subprocess.call(command_exec, shell = True)
 
 print('Finished generating blast files for identifying Xenopus to Human best matches!')
+```
+**Section 5:**
+Parse the BTOP alignment strings in the blast output files to identify what the Xenopus phosphorylated residues align to. 
+```
+# 5 --- Go through each of the blastp output files and parse BTOP
+# strings to generate files that have information about whether/to what the
+# xenopus residues align
+#
+#   INPUTS -- xen residues
+#          -- info in dict_files
+#          -- btop_dict -- dictionary with information about the BTOP out string
+#          -- match_dict -- dictionary with information about the xenopus info file
+#
+#   OUTPUTS -- no_alignment - set of the xenopus references that do not align
+#           to a human reference with the given cutoff p-value
+#           -- alignment_resuts - dictionary with the alignment results where
+#               -2 - no alignment
+#               -1 - gap
+#                0 - match
+#                1 - S/T swap
+#                3 - mismatch
+
+btop_dict = {'QueryName': 0, 'SubjectName': 1, 'MatchPercent': 2, 'AlignLength': 3, \
+'QueryStart': 6, 'QueryEnd': 7, 'SubjectStart': 8, 'SubjectEnd': 9, 'BTOP': 11}
+
+match_dict = {'Xen_Res': 'Xen_Res', 'Human_Res': 'Human_Res','Match': 'Match',\
+'Human_Info': 'Human_Info'}
+
+print('Parsing blast files to identify phosphorylated residue alighnment to human.')
+
+[no_alignment, alignment_results] = st2.for_each_match(xen_residues, "-out.txt", \
+dict_blastp["BlastOutputFolder"], btop_dict, match_dict)
 ```
