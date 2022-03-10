@@ -246,6 +246,7 @@ print('Parsing blast files to identify phosphorylated residue alighnment to huma
 dict_blastp["BlastOutputFolder"], btop_dict, match_dict)
 ```
 **Section 6:**
+Combine the results from the alignment parsing, the Xenopus residues that do not have a best match human protein, and motif information into a dictionary for creating an ouput .csv files.
 ```
 # 6 --- This function does three things:
 #
