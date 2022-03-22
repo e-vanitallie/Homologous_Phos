@@ -46,10 +46,8 @@ First, neccesary Pyton modules are loaded in addition to the five custom modules
 ```
 #!/usr/bin/env python3
 
-'''
 # 1 -- Import modules and set up the dictionary of files for calling subsequent
 #       functions and execution statements. 
-'''
 
 import datetime
 today = datetime.date.today()
